@@ -114,8 +114,8 @@ const ImageInput = ({
 
   const getImageSrc = (image: ResponseImage | File): string => {
     // пошел нахуй юнион ебаный
-    return image.src
-      ? getServerImage(image.src)
+    return (image as ResponseImage).src
+      ? getServerImage((image as ResponseImage).src)
       : URL.createObjectURL(image as File);
   };
 
