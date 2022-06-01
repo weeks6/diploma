@@ -31,11 +31,11 @@ export default function Appbar() {
         <AppBar position='static'>
           <Toolbar>
             <Box sx={{ flexGrow: 1, display: { md: 'flex' } }}>
-              <Button color='inherit' sx={{ mr: 1 }} component={Link} to='/'>
+              {/* <Button color='inherit' sx={{ mr: 1 }} component={Link} to='/'>
                 Главная
-              </Button>
+              </Button> */}
 
-              {loggedIn && (
+              {/* {loggedIn && (
                 <Button
                   color='inherit'
                   sx={{ mr: 1 }}
@@ -44,7 +44,7 @@ export default function Appbar() {
                 >
                   Профиль
                 </Button>
-              )}
+              )} */}
 
               {loggedIn && (
                 <Button
