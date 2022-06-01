@@ -1,4 +1,5 @@
-import { PhotoCamera, Delete } from '@mui/icons-material';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import Delete from '@mui/icons-material/Delete';
 import {
   Button,
   ButtonBase,

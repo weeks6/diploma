@@ -1,9 +1,6 @@
-import {
-  Delete,
-  FormatColorResetOutlined,
-  Visibility,
-  VisibilityOff
-} from '@mui/icons-material';
+import Delete from '@mui/icons-material/Delete';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {
   Box,
   Button,
