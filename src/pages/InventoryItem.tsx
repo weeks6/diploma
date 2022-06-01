@@ -184,11 +184,7 @@ const InventoryItem = () => {
             </List>
           </Grid>
           <Grid item xs={12} md={5}>
-            <ImageList
-              sx={{ width: 500, height: 450 }}
-              cols={3}
-              rowHeight={164}
-            >
+            <ImageList cols={3}>
               {(item.images || []).map((img, index) => (
                 <ImageListItem key={index}>
                   <img

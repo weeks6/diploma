@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
 import QRious from 'qrious';
+import { useEffect, useRef, useState } from 'react';
+import { useMediaQuery, useTheme } from '@mui/material';
+import './Qrcode.css';
 
 type QrcodeProps = {
   src: string;
@@ -7,7 +9,12 @@ type QrcodeProps = {
 };
 
 const Qrcode = ({ src, opened }: QrcodeProps) => {
-  const qrCodeContainer = useRef<HTMLCanvasElement>(null);
+  const qrCodeContainer = useRef<HTMLImageElement>(null);
+  const [qrCodeImage, setQrCodeImage] = useState(null);
+
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down('md'));
+  console.log({ isSmall });
 
   useEffect(() => {
     if (opened) {
@@ -21,15 +28,23 @@ const Qrcode = ({ src, opened }: QrcodeProps) => {
         level: 'H',
         padding: 0,
         size: 300,
-        value: src,
-        element: qrCodeContainer.current
+        value: src
+        // element: qrCodeContainer.current
       });
+
+      setQrCodeImage(qr.toDataURL());
     }
   }, [opened]);
 
   return (
     <div className='qrcode__container'>
-      <canvas className='qrcode__main' ref={qrCodeContainer}></canvas>
+      {qrCodeImage && (
+        <img
+          src={qrCodeImage}
+          className='qrcode__main'
+          ref={qrCodeContainer}
+        ></img>
+      )}
     </div>
   );
 };
