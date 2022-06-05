@@ -1,4 +1,12 @@
-import { Button, Container, Grid, Input, Typography } from '@mui/material';
+import {
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  Input,
+  Typography
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import { ChangeEvent, useEffect, useState } from 'react';
 import AddItemPopup from '../components/AddItemPopup/AddItemPopup';
 import InventoryCard from '../components/InventoryCard/InventoryCard';
@@ -100,31 +108,40 @@ const Inventory = () => {
 
   return (
     <>
-      <Container>
-        <Button
-          variant='outlined'
-          sx={{ mt: 2, mb: 2, mr: 1 }}
-          onClick={openItemTypes}
-          disabled={fetchingItemTypes}
-        >
-          Типы оборудования
-        </Button>
-        <Button
-          variant='outlined'
-          sx={{ mt: 2, mb: 2 }}
-          onClick={openRooms}
-          disabled={fetchingRooms}
-        >
-          Помещения
-        </Button>
+      <Container sx={{ marginTop: 2 }}>
+        <Grid container spacing={{ xs: 1 }}>
+          <Grid item>
+            <Button
+              variant='outlined'
+              onClick={openItemTypes}
+              disabled={fetchingItemTypes}
+            >
+              Типы оборудования
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              variant='outlined'
+              onClick={openRooms}
+              disabled={fetchingRooms}
+            >
+              Помещения
+            </Button>
+          </Grid>
+        </Grid>
         <Grid container alignItems='center' marginBottom={1}>
+          <Grid item marginRight={1}>
+            <IconButton
+              aria-label='Создать'
+              size='large'
+              color='primary'
+              onClick={() => setAddItemPopupOpenedOpened(true)}
+            >
+              <AddIcon fontSize='inherit' />
+            </IconButton>
+          </Grid>
           <Grid item>
             <Typography variant='h5'>Оборудование</Typography>
-          </Grid>
-          <Grid item marginLeft={1}>
-            <Button onClick={() => setAddItemPopupOpenedOpened(true)}>
-              Добавить
-            </Button>
           </Grid>
         </Grid>
         <Grid

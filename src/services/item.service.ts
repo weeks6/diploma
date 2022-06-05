@@ -177,9 +177,13 @@ export const editItem = async (formData: {
   try {
     const body = new FormData();
     body.append('id', `${formData.id}`);
-    // formData.photos.forEach((file, index) => {
-    //   body.append(`photos`, file);
-    // });
+    formData.photos.forEach((file, index) => {
+      if (file instanceof File) {
+        body.append(`photos`, file);
+      } else {
+        body.append(`photos_old[]`, file.id);
+      }
+    });
 
     body.append('title', formData.title);
     body.append('type', formData.type);

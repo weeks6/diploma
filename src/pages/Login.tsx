@@ -66,7 +66,7 @@ export default function Login() {
 
         dispatch(setUser(profile.result));
         setLoading(false);
-        navigate('/profile');
+        navigate('/inventory');
       }
 
       console.log({ response, data });

@@ -47,7 +47,7 @@ const RoomPopup = ({ rooms, opened, onUpdate, onClose }: TProps) => {
   });
 
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const onDelete = (id: number) => {
     setConfirmDialogOpened(true);
@@ -122,7 +122,7 @@ const RoomPopup = ({ rooms, opened, onUpdate, onClose }: TProps) => {
         onClose={onClose}
         fullWidth={true}
         fullScreen={fullScreen}
-        maxWidth='lg'
+        maxWidth='sm'
         scroll='paper'
       >
         <DialogTitle>
@@ -154,7 +154,7 @@ const RoomPopup = ({ rooms, opened, onUpdate, onClose }: TProps) => {
                     alignItems='center'
                     spacing={2}
                   >
-                    <Grid item xs={7} sm={10.5}>
+                    <Grid item sx={{ flexGrow: 1 }}>
                       <Field name='title'>
                         {(props) => (
                           <TextField
@@ -171,7 +171,7 @@ const RoomPopup = ({ rooms, opened, onUpdate, onClose }: TProps) => {
                         )}
                       </Field>
                     </Grid>
-                    <Grid item xs='auto'>
+                    <Grid item>
                       <Button type='submit' disabled={loading}>
                         Добавить
                       </Button>

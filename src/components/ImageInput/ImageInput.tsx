@@ -105,8 +105,13 @@ const ImageInput = ({
   const _onChange = (evt: ChangeEvent<HTMLInputElement>) => {
     console.log({ files: evt.target.files });
     if (evt.target.files) {
-      setImages(Array.from(evt.target.files));
-      onChange(Array.from(evt.target.files));
+      if (images.length) {
+        setImages([...images, ...Array.from(evt.target.files)]);
+        onChange([...images, ...Array.from(evt.target.files)]);
+      } else {
+        setImages(Array.from(evt.target.files));
+        onChange(Array.from(evt.target.files));
+      }
     } else {
       setImages([]);
       onChange([]);
@@ -120,9 +125,9 @@ const ImageInput = ({
       : URL.createObjectURL(image as File);
   };
 
-  const onDeleteImage = (filename: string) => {
+  const onDeleteImage = (idx: number) => {
     setImages((state) => {
-      const data = state.filter((file) => file.name !== filename);
+      const data = [...state.slice(0, idx), ...state.slice(idx + 1)];
       onChange(data);
       return data;
     });
@@ -158,7 +163,7 @@ const ImageInput = ({
         {images.map((image, index) => (
           <Grid item key={index}>
             <StyledPaper>
-              <DeleteButton onClick={() => onDeleteImage(image.name)}>
+              <DeleteButton onClick={() => onDeleteImage(index)}>
                 <Delete />
               </DeleteButton>
               <Image src={getImageSrc(image)}></Image>

@@ -25,7 +25,7 @@ const RoomItem = ({ item, onDelete, onEdit }: TProps) => {
         }
       }}
     >
-      <Grid item xs={8} sm={11} paddingLeft={1}>
+      <Grid item paddingLeft={1} sx={{ flexGrow: 1 }}>
         {item.title}
       </Grid>
       <Grid item xs='auto'>
