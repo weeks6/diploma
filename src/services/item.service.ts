@@ -26,6 +26,11 @@ export type TInventoryItem = {
   room: Room;
 };
 
+export type TInventoryFilters = {
+  room?: string;
+  type?: string;
+};
+
 export const itemTypesList = async (): Promise<ItemType[]> => {
   try {
     const response = await fetch(`${API_ENDPOINT}/inventory/itemTypes`, {
@@ -105,9 +110,29 @@ export const editItemType = async (id: number, title: string) => {
   }
 };
 
-export const itemList = async () => {
+export const itemList = async (filters: TInventoryFilters = {}) => {
   try {
-    const response = await fetch(`${API_ENDPOINT}/inventory/items`, {
+    let url = `${API_ENDPOINT}/inventory/items`;
+
+    if (filters.room) {
+      if (url.indexOf('?') < 0) {
+        url += '?';
+      }
+
+      url += `room=${filters.room}`;
+    }
+
+    if (filters.type) {
+      if (url.indexOf('?') < 0) {
+        url += '?';
+      } else {
+        url += '&';
+      }
+
+      url += `type=${filters.type}`;
+    }
+
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

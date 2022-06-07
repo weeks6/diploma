@@ -18,8 +18,11 @@ import {
   itemTypesList,
   Room,
   roomList,
+  TInventoryFilters,
   TInventoryItem
 } from '../services/item.service';
+import InventoryFilters from '../components/InventoryFilter/InventoryFilters';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 const Inventory = () => {
   const [itemTypesPopupOpened, setItemTypesPopupOpened] = useState(false);
@@ -31,6 +34,8 @@ const Inventory = () => {
   const [items, setItems] = useState<TInventoryItem[]>([]);
   const [rooms, setRooms] = useState<Room[]>([]);
   const [itemTypes, setItemTypes] = useState<ItemType[]>([]);
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const fetchRooms = async () => {
     try {
@@ -59,7 +64,20 @@ const Inventory = () => {
   const fetchItems = async () => {
     try {
       setFetchingItems(true);
-      const result = await itemList();
+
+      const filters: TInventoryFilters = {};
+
+      const roomFilters = searchParams.get('room');
+      if (roomFilters) {
+        filters.room = roomFilters;
+      }
+
+      const typeFilters = searchParams.get('type');
+      if (typeFilters) {
+        filters.room = typeFilters;
+      }
+
+      const result = await itemList(filters);
       setItems(result);
     } catch (error) {
       console.log(error);
@@ -71,7 +89,6 @@ const Inventory = () => {
   const init = async () => {
     fetchItemTypes();
     fetchRooms();
-    fetchItems();
   };
 
   const openItemTypes = () => {
@@ -92,15 +109,22 @@ const Inventory = () => {
 
   const onAddItemSuccess = () => {
     init();
+    fetchItems();
   };
 
   const onRoomUpdate = () => {
     init();
+    fetchItems();
   };
 
   const onItemTypesUpdate = () => {
     init();
+    fetchItems();
   };
+
+  useEffect(() => {
+    fetchItems();
+  }, [searchParams]);
 
   useEffect(() => {
     init();
@@ -144,6 +168,10 @@ const Inventory = () => {
             <Typography variant='h5'>Оборудование</Typography>
           </Grid>
         </Grid>
+        <InventoryFilters
+          roomOptions={rooms}
+          itemTypeOptions={itemTypes}
+        ></InventoryFilters>
         <Grid
           container
           spacing={{ xs: 2, md: 4 }}
