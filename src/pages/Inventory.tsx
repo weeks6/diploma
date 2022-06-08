@@ -74,7 +74,7 @@ const Inventory = () => {
 
       const typeFilters = searchParams.get('type');
       if (typeFilters) {
-        filters.room = typeFilters;
+        filters.type = typeFilters;
       }
 
       const result = await itemList(filters);

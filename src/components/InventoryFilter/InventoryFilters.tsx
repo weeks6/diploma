@@ -28,13 +28,23 @@ const MenuProps = {
   }
 };
 
-const InventoryFilters = ({ roomOptions }: TProps) => {
+const InventoryFilters = ({ roomOptions, itemTypeOptions }: TProps) => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+
   const [selectedRooms, setSelectedRooms] = useState<string[]>(() => {
     const rooms = searchParams.get('room');
     if (rooms?.length) {
       return rooms.split(',');
+    }
+
+    return [];
+  });
+
+  const [selectedTypes, setSelectedTypes] = useState<string[]>(() => {
+    const types = searchParams.get('type');
+    if (types?.length) {
+      return types.split(',');
     }
 
     return [];
@@ -45,18 +55,56 @@ const InventoryFilters = ({ roomOptions }: TProps) => {
       target: { value }
     } = event;
     setSelectedRooms(() => {
+      if (
+        typeof value === 'string'
+          ? value.indexOf('all') > -1
+          : value.includes('all')
+      ) {
+        searchParams.delete('room');
+        setSearchParams(searchParams);
+        return [];
+      }
+
       const newSelectedRooms =
         typeof value === 'string' ? value.split(',') : value;
 
       const params: any = {};
 
       if (newSelectedRooms.length) {
-        params.room = newSelectedRooms.join(',');
+        searchParams.set('room', newSelectedRooms.join(','));
       }
 
-      setSearchParams(params);
+      setSearchParams(searchParams);
 
       return newSelectedRooms;
+    });
+  };
+
+  const onTypeChange = (event: SelectChangeEvent<typeof selectedTypes>) => {
+    const {
+      target: { value }
+    } = event;
+    setSelectedTypes(() => {
+      if (
+        typeof value === 'string'
+          ? value.indexOf('all') > -1
+          : value.includes('all')
+      ) {
+        searchParams.delete('type');
+        setSearchParams(searchParams);
+        return [];
+      }
+
+      const newSelectedTypes =
+        typeof value === 'string' ? value.split(',') : value;
+
+      if (newSelectedTypes.length) {
+        searchParams.set('type', newSelectedTypes.join(','));
+      }
+
+      setSearchParams(searchParams);
+
+      return newSelectedTypes;
     });
   };
 
@@ -82,10 +130,46 @@ const InventoryFilters = ({ roomOptions }: TProps) => {
           }
           MenuProps={MenuProps}
         >
+          <MenuItem key='all' value='all'>
+            <Checkbox checked={!selectedRooms.length} />
+            <ListItemText primary='Все' />
+          </MenuItem>
           {roomOptions.map((room) => (
             <MenuItem key={room.id} value={`${room.id}`}>
               <Checkbox checked={selectedRooms.includes(`${room.id}`)} />
               <ListItemText primary={room.title} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <FormControl sx={{ m: 1, width: 300 }} size='small'>
+        <InputLabel id='inventory-type-filter'>Типы инвентаря</InputLabel>
+        <Select
+          labelId='inventory-type-filter'
+          id='demo-multiple-checkbox'
+          multiple
+          value={selectedTypes}
+          onChange={onTypeChange}
+          input={<OutlinedInput label='Типы инвентаря' />}
+          renderValue={(selected) =>
+            selected
+              .map(
+                (id) =>
+                  itemTypeOptions.find((type) => type.id === Number(id))?.title
+              )
+              .filter((v) => v)
+              .join(', ')
+          }
+          MenuProps={MenuProps}
+        >
+          <MenuItem key='all' value='all'>
+            <Checkbox checked={!selectedTypes.length} />
+            <ListItemText primary='Все' />
+          </MenuItem>
+          {itemTypeOptions.map((type) => (
+            <MenuItem key={type.id} value={`${type.id}`}>
+              <Checkbox checked={selectedTypes.includes(`${type.id}`)} />
+              <ListItemText primary={type.title} />
             </MenuItem>
           ))}
         </Select>
