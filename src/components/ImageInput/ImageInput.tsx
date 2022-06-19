@@ -94,8 +94,6 @@ const ImageInput = ({
   helperText,
   value = []
 }: TProps) => {
-  console.log({ value });
-
   const [images, setImages] = useState<File[]>(
     typeof value === 'string' ? [] : value
   );
@@ -103,7 +101,6 @@ const ImageInput = ({
   const imageInput = useRef<HTMLInputElement>(null);
 
   const _onChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    console.log({ files: evt.target.files });
     if (evt.target.files) {
       if (images.length) {
         setImages([...images, ...Array.from(evt.target.files)]);

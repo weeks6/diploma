@@ -32,6 +32,7 @@ import {
 
 import ImageInput from '../ImageInput/ImageInput';
 import PropertiesInput from '../PropertiesInput/PropertiesInput';
+import { ItemProperty } from '../../pages/InventoryItem';
 
 type TProps = {
   itemTypes: ItemType[];
@@ -46,7 +47,7 @@ type TProps = {
     room?: number;
     guid?: string;
     photos?: any[];
-    properties?: string;
+    properties?: ItemProperty[];
   };
 };
 
@@ -131,10 +132,7 @@ const EditItemPopup = ({
           <Box marginBottom={2}>
             <Form
               initialValues={{
-                ...initialData,
-                properties: JSON.parse(
-                  initialData.properties ? initialData.properties : '[]'
-                )
+                ...initialData
               }}
               onSubmit={onEdit}
               validate={validate}

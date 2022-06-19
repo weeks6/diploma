@@ -29,7 +29,7 @@ import QrcodePopup from '../components/QrcodePopup/QrcodePopup';
 import { ROOT_URL } from '../services/constants';
 import EditItemPopup from '../components/EditItemPopup/EditItemPopup';
 
-type ItemProperty = {
+export type ItemProperty = {
   key: string;
   value: string;
   id: string;
@@ -109,6 +109,19 @@ const InventoryItem = () => {
     setQrcodePopupOpened(false);
   };
 
+  const parseItemProperties = (): ItemProperty[] => {
+    try {
+      const data = JSON.parse(item.properties || '[]');
+      return data;
+    } catch (error) {
+      return [];
+    }
+  };
+
+  const displayDate = (dateString: string): string => {
+    return new Date(dateString).toLocaleString();
+  };
+
   const setQrcodeSrc = () => {
     return `${ROOT_URL}/inventory/${item.id}`;
   };
@@ -171,16 +184,35 @@ const InventoryItem = () => {
                 Свойства
               </Typography>
 
-              {(JSON.parse(item.properties || '[]') as ItemProperty[]).map(
-                (item) => (
-                  <div key={item.id}>
+              {parseItemProperties().map((item) => (
+                <div key={item.id}>
+                  <ListItem alignItems='flex-start'>
+                    <ListItemText primary={item.key} secondary={item.value} />
+                  </ListItem>
+                  <Divider component='li' />
+                </div>
+              ))}
+              <Typography variant='h6' marginTop={2}>
+                История перемещний
+              </Typography>
+
+              {item.movementHistory
+                ?.sort(
+                  (a, b) =>
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime()
+                )
+                .map((movementHistoryItem) => (
+                  <div key={movementHistoryItem.id}>
                     <ListItem alignItems='flex-start'>
-                      <ListItemText primary={item.key} secondary={item.value} />
+                      <ListItemText
+                        primary={movementHistoryItem.room.title}
+                        secondary={displayDate(movementHistoryItem.createdAt)}
+                      />
                     </ListItem>
                     <Divider component='li' />
                   </div>
-                )
-              )}
+                ))}
             </List>
           </Grid>
           <Grid item xs={12} md={5}>
@@ -208,7 +240,7 @@ const InventoryItem = () => {
             id: item.id,
             guid: item.guid,
             photos: item.images,
-            properties: item.properties,
+            properties: parseItemProperties(),
             room: item.room?.id,
             title: item.title,
             type: item.type?.id

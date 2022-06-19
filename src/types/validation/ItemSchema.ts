@@ -16,5 +16,5 @@ export const itemShema = object().shape({
   guid: string().required().min(2),
   photos: array().required().min(1),
   type: string().required(),
-  properties: array().required().min(1)
+  properties: array()
 });

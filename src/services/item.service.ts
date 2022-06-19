@@ -11,10 +11,19 @@ export type ItemType = {
   title: string;
 };
 
+export type TMovementHistoryItem = {
+  id: number;
+  createdAt: string;
+  itemId: number;
+  roomId: number;
+  room: Room;
+};
+
 export type TInventoryItem = {
   id: number;
   createdAt: string;
   images: any[];
+  movementHistory: TMovementHistoryItem[];
   properties: string;
   title: string;
   guid: string;

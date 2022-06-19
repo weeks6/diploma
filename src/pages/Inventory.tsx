@@ -153,7 +153,7 @@ const Inventory = () => {
             </Button>
           </Grid>
         </Grid>
-        <Grid container alignItems='center' marginBottom={1}>
+        <Grid container alignItems='center'>
           <Grid item marginRight={1}>
             <IconButton
               aria-label='Создать'
@@ -176,6 +176,7 @@ const Inventory = () => {
           container
           spacing={{ xs: 2, md: 4 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
+          marginBottom={4}
         >
           {items.map((item, index) => (
             <Grid item key={index} xs={4} sm={4} md={4}>
