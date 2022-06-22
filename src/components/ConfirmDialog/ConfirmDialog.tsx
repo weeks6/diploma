@@ -12,7 +12,7 @@ type TProps = {
   handleClose: any;
   onCancel: any;
   onProceed: any;
-  ctx: any;
+  ctx?: any;
 };
 
 const ConfirmDialog = ({

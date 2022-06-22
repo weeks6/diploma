@@ -28,6 +28,7 @@ import { getServerImage } from '../utils/getServerImage';
 import QrcodePopup from '../components/QrcodePopup/QrcodePopup';
 import { ROOT_URL } from '../services/constants';
 import EditItemPopup from '../components/EditItemPopup/EditItemPopup';
+import ConfirmDialog from '../components/ConfirmDialog/ConfirmDialog';
 
 export type ItemProperty = {
   key: string;
@@ -43,6 +44,8 @@ const InventoryItem = () => {
   const [fetchingItemTypes, setFetchingItemTypes] = useState(false);
   const [qrcodePopupOpened, setQrcodePopupOpened] = useState(false);
   const [editPopupOpened, setEditPopupOpened] = useState(false);
+  const [confirmDialogOpened, setConfirmDialogOpened] = useState(false);
+
   const [rooms, setRooms] = useState<Room[]>([]);
   const [itemTypes, setItemTypes] = useState<ItemType[]>([]);
   const [snackbar, setSnackbar] = useState(false);
@@ -65,7 +68,9 @@ const InventoryItem = () => {
     }
   };
 
-  const onItemDelete = async () => {
+  const onDelete = () => setConfirmDialogOpened(true);
+
+  const onProceedDelete = async () => {
     try {
       setLoading(true);
       await deleteItem(item.id);
@@ -152,7 +157,7 @@ const InventoryItem = () => {
         >
           Редактировать
         </Button>
-        <Button onClick={onItemDelete} variant='outlined' color='error'>
+        <Button onClick={onDelete} variant='outlined' color='error'>
           Удалить
         </Button>
         <Grid container columnGap={4}>
@@ -246,6 +251,13 @@ const InventoryItem = () => {
             type: item.type?.id
           }}
         ></EditItemPopup>
+
+        <ConfirmDialog
+          opened={confirmDialogOpened}
+          handleClose={() => setConfirmDialogOpened(false)}
+          onCancel={() => setConfirmDialogOpened(false)}
+          onProceed={onProceedDelete}
+        />
 
         <QrcodePopup
           opened={qrcodePopupOpened}
