@@ -103,3 +103,18 @@ export const userList = async () => {
 
   return result;
 };
+
+export const makeAdminUser = async (id: number) => {
+  const response = await fetch(`${API_ENDPOINT}/user/makeAdmin`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${getAccessToken()}`
+    },
+    body: JSON.stringify({ id })
+  });
+
+  const result = await response.json();
+
+  return result;
+};
