@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 
 import { useStateDispatch } from '../../features/store';
 import { setUser } from '../../features/user/userSlice';
@@ -43,7 +43,7 @@ const Body = () => {
   return (
     <>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Navigate to='/inventory' />} />
         <Route path='/setup' element={<Setup />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
